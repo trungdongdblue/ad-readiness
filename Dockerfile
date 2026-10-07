@@ -19,3 +19,6 @@ RUN npm run web:build
 FROM nginx:1.27-alpine AS web
 COPY deploy/nginx.conf /etc/nginx/conf.d/default.conf
 COPY --from=web-build /app/web/dist /usr/share/nginx/html
+
+# Last stage = what platforms that build the final stage (Railway) get: the API/worker image. docker-compose picks its own targets.
+FROM app AS railway
