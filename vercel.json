@@ -1,0 +1,9 @@
+{
+  "buildCommand": "npm run web:build",
+  "outputDirectory": "web/dist",
+  "installCommand": "npm ci",
+  "rewrites": [
+    { "source": "/api/:path*", "destination": "https://api-production-053b.up.railway.app/api/:path*" },
+    { "source": "/((?!api/).*)", "destination": "/index.html" }
+  ]
+}
