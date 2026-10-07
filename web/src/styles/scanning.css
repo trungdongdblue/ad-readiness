@@ -1,0 +1,23 @@
+.scan-page { min-height: calc(100vh - 140px); display: grid; place-items: center; padding-block: var(--space-6); }
+.scan-card { width: min(100%, 560px); display: flex; flex-direction: column; gap: var(--space-5); }
+.scan-card__top { display: flex; flex-direction: column; gap: var(--space-2); }
+.scan-card__url { font-family: var(--font-mono); font-size: var(--text-sm); word-break: break-all; }
+.scan-card__title { font-size: var(--text-lg); }
+.scan-card__meta { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-3); }
+.timer { font-family: var(--font-mono); font-size: var(--text-sm); color: var(--text-secondary); }
+
+.steps { display: flex; flex-direction: column; }
+.step { position: relative; display: grid; grid-template-columns: 28px 1fr; gap: var(--space-3); padding-bottom: var(--space-4); }
+.step:last-child { padding-bottom: 0; }
+.step:not(:last-child)::before { content: ''; position: absolute; left: 13px; top: 28px; bottom: 0; width: 2px; background: var(--neutral-200); }
+.step[data-state='done']:not(:last-child)::before { background: var(--color-success); }
+.step__dot { display: grid; place-items: center; width: 28px; height: 28px; border: 2px solid var(--neutral-300); border-radius: 50%; background: var(--surface-card); color: var(--neutral-400); font-size: 11px; font-weight: 700; }
+.step[data-state='done'] .step__dot { border-color: var(--color-success); background: var(--color-success); color: #fff; }
+.step[data-state='active'] .step__dot { border-color: var(--ecomdy-blue); color: var(--ecomdy-blue); box-shadow: var(--shadow-focus); }
+.step__label { font-size: var(--text-sm); font-weight: 700; line-height: 28px; }
+.step[data-state='pending'] .step__label { color: var(--neutral-400); font-weight: 600; }
+.step__hint { font-size: var(--text-xs); color: var(--text-secondary); line-height: var(--leading-snug); }
+
+.scan-card__foot { display: flex; align-items: center; justify-content: space-between; gap: var(--space-3); padding-top: var(--space-4); border-top: 1px solid var(--surface-border); font-size: var(--text-xs); color: var(--text-secondary); }
+.error-card { text-align: center; align-items: center; }
+.error-card__icon { display: grid; place-items: center; width: 48px; height: 48px; border-radius: 50%; background: rgba(255, 0, 59, 0.1); color: var(--ecomdy-red); }

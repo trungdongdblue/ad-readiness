@@ -1,0 +1,3 @@
+url,platform,pixel_id,view_content,add_to_cart,initiate_checkout,notes
+https://example-store-1.com,shopify,CXXXXXXXXXXXXXXXXXXX,yes,yes,unknown,checked with Pixel Helper on 2026-10-01
+https://example-store-2.com,woocommerce,none,no,no,no,no pixel installed

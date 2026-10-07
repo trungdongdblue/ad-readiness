@@ -1,0 +1,5 @@
+# Dev-only defaults, read automatically by `docker compose up`. Production: `docker compose -f docker-compose.yml up -d`.
+services:
+  api:
+    environment:
+      SCAN_LIMIT_PER_HOUR: "100"

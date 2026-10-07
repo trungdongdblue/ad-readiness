@@ -1,0 +1,17 @@
+url,refund_policy,terms,privacy,shipping,contact,company,notes
+https://nishatlinen.com,yes,yes,yes,no,yes,unknown,Claude labelled from footer dump 2026-10-05 - human review needed
+https://www.gulahmedshop.com,yes,no,yes,yes,yes,unknown,Claude labelled from footer dump 2026-10-05 - human review needed
+https://saya.pk,yes,yes,yes,yes,yes,unknown,Claude labelled from footer dump 2026-10-05 - human review needed
+https://zellbury.com,yes,yes,yes,yes,yes,unknown,Claude labelled from footer dump 2026-10-05 - human review needed
+https://www.khaadi.com,unknown,unknown,unknown,unknown,unknown,unknown,country picker page - nothing to label
+https://edenrobe.com,yes,yes,yes,yes,yes,unknown,Claude labelled from footer dump 2026-10-05 - human review needed
+https://outfitters.com.pk,yes,no,no,yes,yes,unknown,footer after full scroll 2026-10-05: Exchange & Returns / Shipping & Deliveries / Contact Us; no Terms or Privacy link (may sit inside Shopping Guide)
+https://limelight.pk,unknown,unknown,unknown,unknown,yes,unknown,single Policies hub link - contents not checked
+https://www.sanasafinaz.com,yes,yes,yes,yes,yes,yes,Claude labelled from footer dump 2026-10-05 - company = Mean3 Pvt Ltd
+https://asimjofa.com,yes,yes,yes,yes,yes,unknown,Claude labelled from footer dump 2026-10-05 - human review needed
+https://pakistanstore.pk,yes,yes,yes,yes,yes,unknown,Claude labelled from footer dump 2026-10-05 - human review needed
+https://ebuy.pk,unknown,unknown,unknown,unknown,unknown,unknown,0 anchors in headless dump - blocked
+https://www.ishopping.pk,unknown,unknown,unknown,unknown,unknown,unknown,Cloudflare challenge page
+https://priceoye.pk,unknown,yes,yes,no,yes,unknown,refund unknown: policy may sit in Help Center - contact is a Contact Us link only
+https://www.telemart.pk,yes,yes,yes,yes,unknown,unknown,redirects to telex.pk - no contact link in footer dump
+https://www.namshi.com,unknown,unknown,unknown,unknown,unknown,unknown,0 anchors in headless dump - blocked

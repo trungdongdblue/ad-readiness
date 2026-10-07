@@ -1,0 +1,10 @@
+node_modules/
+.cache/
+.codegraph/
+graph/
+poc/results/
+poc/stores.csv
+poc/ground-truth.csv
+.env*
+*.har
+web/dist/

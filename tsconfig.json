@@ -1,0 +1,36 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "strict": true,
+    "noUncheckedIndexedAccess": true,
+    "noImplicitOverride": true,
+    "noFallthroughCasesInSwitch": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "noEmit": true,
+    "types": [
+      "node"
+    ],
+    "lib": [
+      "ES2022",
+      "DOM"
+    ],
+    "jsx": "react-jsx",
+    "paths": {
+      "@domain/*": [
+        "./src/domain/*"
+      ],
+      "@engine/*": [
+        "./src/engine/*"
+      ]
+    }
+  },
+  "include": [
+    "src",
+    "tests",
+    "web/src",
+    "web/vite.config.ts"
+  ]
+}

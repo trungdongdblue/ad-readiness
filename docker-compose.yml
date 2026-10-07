@@ -1,0 +1,52 @@
+# Production-shaped stack: nginx (UI + /api) -> api -> redis <- worker -> egress proxy -> internet.
+#   docker compose up --build        then open http://localhost:8080
+services:
+  web:
+    build: { context: ., target: web }
+    ports: ["8080:80"]
+    depends_on: [api]
+
+  api:
+    build: { context: ., target: app }
+    environment:
+      HOST: 0.0.0.0
+      REDIS_URL: redis://redis:6379
+      TRUSTED_PROXY_HOPS: "1"   # nginx is the one proxy in front
+      SCAN_LIMIT_PER_HOUR: ${SCAN_LIMIT_PER_HOUR:-5}
+    depends_on: [redis]
+    restart: unless-stopped
+
+  worker:
+    build: { context: ., target: app }
+    command: ["npx", "tsx", "src/cli/worker.ts"]
+    environment:
+      REDIS_URL: redis://redis:6379
+      SCAN_PROXY: http://egress:3128
+      SCAN_CONCURRENCY: "2"
+      # Optional proxy that exits in a market's country (replaces SCAN_PROXY for that market, so it must be an egress proxy you trust).
+      SCAN_PROXY_PK: ${SCAN_PROXY_PK:-}
+      SCAN_PROXY_IQ: ${SCAN_PROXY_IQ:-}
+      SCAN_PROXY_AE: ${SCAN_PROXY_AE:-}
+      SCAN_PROXY_SA: ${SCAN_PROXY_SA:-}
+      SCAN_PROXY_EG: ${SCAN_PROXY_EG:-}
+      CRUX_API_KEY: ${CRUX_API_KEY:-}
+      GOOGLE_GENAI_API_KEY: ${GOOGLE_GENAI_API_KEY:-}   # optional: AI review of claims and policy links, and the AI fix plan
+    ipc: host                   # Chromium needs a shared-memory budget (Playwright docker guidance)
+    depends_on: [redis, egress]
+    stop_grace_period: 3m       # let running scans finish on deploy
+    restart: unless-stopped
+    scale: 1
+
+  egress:
+    image: ubuntu/squid:latest
+    volumes: ["./deploy/squid.conf:/etc/squid/squid.conf:ro"]
+    restart: unless-stopped
+
+  redis:
+    image: redis:7-alpine
+    command: ["redis-server", "--appendonly", "yes"]
+    volumes: ["redis-data:/data"]
+    restart: unless-stopped
+
+volumes:
+  redis-data:

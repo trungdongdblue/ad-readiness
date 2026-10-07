@@ -1,0 +1,43 @@
+{
+  "name": "@ecomdy/ad-readiness",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Store Ad-Readiness Grader - Tracking module PoC",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "scan": "tsx src/cli/scan.ts",
+    "poc": "tsx src/cli/poc.ts",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "check": "npm run typecheck && npm run test",
+    "browsers": "playwright install chromium",
+    "serve": "tsx src/cli/serve.ts",
+    "web": "vite --config web/vite.config.ts",
+    "web:build": "vite build --config web/vite.config.ts",
+    "worker": "tsx src/cli/worker.ts",
+    "llm:eval": "tsx src/cli/llm-eval.ts",
+    "advice:eval": "tsx src/cli/advice-eval.ts",
+    "site:eval": "tsx src/cli/site-eval.ts"
+  },
+  "dependencies": {
+    "bullmq": "^6.3.11",
+    "ioredis": "^6.0.0",
+    "lucide-react": "^1.52.0",
+    "playwright": "^1.63.0",
+    "react": "^19.3.0",
+    "react-dom": "^19.3.0"
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.3",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "@vitejs/plugin-react": "^6.1.1",
+    "tsx": "^4.23.15",
+    "typescript": "^7.0.2",
+    "vite": "^8.3.2",
+    "vitest": "^5.0.3"
+  }
+}

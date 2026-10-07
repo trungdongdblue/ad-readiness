@@ -1,0 +1,52 @@
+/* Terms: dotted word that explains itself on hover, focus or tap */
+.term { position: relative; border-bottom: 1px dotted currentColor; cursor: help; }
+.term__tip { position: absolute; left: 0; top: calc(100% + 6px); z-index: 20; display: block; width: max-content; max-width: min(280px, calc(100vw - 2 * var(--gutter))); padding: var(--space-3); border-radius: var(--radius-md); background: var(--neutral-950); color: #fff; font-family: var(--font-sans); font-size: var(--text-xs); font-weight: 500; line-height: var(--leading-normal); text-transform: none; letter-spacing: 0; text-align: left; box-shadow: var(--shadow-lg); display: none; pointer-events: none; }
+.term__tip b { display: block; margin-bottom: 2px; font-weight: 700; }
+.term:hover .term__tip, .term:focus .term__tip { display: block; }
+/* On a phone the tip is a card pinned above the bottom edge, so it can never run off-screen or widen the page. */
+@media (max-width: 640px) { .term__tip { position: fixed; top: auto; right: var(--gutter); bottom: var(--gutter); left: var(--gutter); width: auto; max-width: none; } }
+
+/* Finding body */
+.finding__help { display: flex; flex-direction: column; gap: var(--space-2); padding: var(--space-3) var(--space-4); border-radius: var(--radius-md); background: var(--surface-sunken); font-size: var(--text-sm); line-height: var(--leading-relaxed); }
+.finding__help b { display: block; font-size: var(--text-xs); letter-spacing: var(--tracking-label); text-transform: uppercase; color: var(--text-secondary); }
+
+/* Speed metrics */
+.metrics { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: var(--space-3); }
+.metric { display: grid; gap: 4px; padding: var(--space-3) var(--space-4); border: 1px solid var(--surface-border); border-radius: var(--radius-md); }
+.metric[data-grade='good'] { --g: var(--color-success); --gt: #067a52; }
+.metric[data-grade='needs'] { --g: var(--color-warning); --gt: #946b00; }
+.metric[data-grade='poor'] { --g: var(--ecomdy-red); --gt: #c70030; }
+.metric__title { font-size: var(--text-xs); font-weight: 600; color: var(--text-secondary); }
+.metric__value { font-size: var(--text-xl); font-weight: 700; line-height: 1.1; color: var(--gt); }
+.metric__grade { font-size: var(--text-xs); font-weight: 700; color: var(--gt); }
+.metric__track { position: relative; height: 8px; margin-top: 4px; border-radius: var(--radius-pill); background: linear-gradient(90deg, var(--color-success) 0 var(--good), var(--color-warning) var(--good) var(--poor), var(--ecomdy-red) var(--poor) 100%); opacity: 0.85; }
+.metric__marker { position: absolute; top: -3px; width: 4px; height: 14px; margin-left: -2px; border-radius: 2px; background: var(--neutral-950); box-shadow: 0 0 0 2px #fff; }
+.metric__hint { font-size: 11.5px; color: var(--text-secondary); }
+
+/* Tracking summary */
+.tracking { display: flex; flex-direction: column; gap: var(--space-3); padding: var(--space-4) var(--space-5); border: 1px solid var(--surface-border); border-radius: var(--radius-lg); background: var(--surface-card); }
+.tracking__intro, .tracking__pixel, .tracking__other { font-size: var(--text-sm); line-height: var(--leading-relaxed); }
+.tracking__pixel code { margin-left: var(--space-2); padding: 2px 8px; border-radius: var(--radius-sm); background: var(--surface-sunken); font-size: 12px; }
+.events { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: var(--space-3); }
+.event-card { display: flex; flex-direction: column; gap: 4px; padding: var(--space-3) var(--space-4); border: 1px solid var(--surface-border); border-left-width: 4px; border-radius: var(--radius-md); }
+.event-card[data-state='verified'] { border-left-color: var(--color-success); }
+.event-card[data-state='detected'] { border-left-color: var(--color-warning); }
+.event-card[data-state='missing'] { border-left-color: var(--ecomdy-red); }
+.event-card[data-state='unverifiable'] { border-left-color: var(--neutral-300); }
+.event-card__name { font-size: var(--text-sm); font-weight: 700; }
+.event-card__plain { font-size: var(--text-xs); color: var(--text-secondary); }
+.event-card__state { display: flex; align-items: center; gap: 6px; margin-top: 2px; font-size: var(--text-xs); font-weight: 700; }
+.chip { display: inline-block; margin: 2px 4px 2px 0; padding: 2px 8px; border-radius: var(--radius-sm); background: var(--surface-sunken); font-size: 12px; }
+
+/* Findings helpers */
+.findings__hint { font-size: var(--text-xs); font-weight: 500; letter-spacing: 0; text-transform: none; color: var(--text-secondary); }
+.findings__title .findings__hint { margin-left: var(--space-2); }
+.findings__note { margin: var(--space-2) 0; font-size: var(--text-sm); color: var(--text-secondary); }
+.legend { display: flex; flex-wrap: wrap; gap: var(--space-2) var(--space-5); font-size: var(--text-xs); color: var(--text-secondary); }
+.legend > span { display: inline-flex; align-items: center; gap: 6px; }
+details.findings__group > summary { flex-wrap: wrap; }
+
+/* How the score works */
+.how { padding: var(--space-3) var(--space-5); border: 1px solid var(--surface-border); border-radius: var(--radius-lg); background: var(--surface-card); }
+.how > summary { cursor: pointer; font-size: var(--text-sm); font-weight: 700; }
+.how ul { display: flex; flex-direction: column; gap: var(--space-2); margin-top: var(--space-3); padding-left: var(--space-5); list-style: disc; font-size: var(--text-sm); line-height: var(--leading-relaxed); color: var(--text-secondary); }
