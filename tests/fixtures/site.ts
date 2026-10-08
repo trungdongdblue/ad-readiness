@@ -43,6 +43,8 @@ const PICKER: Record<Sizes, string> = {
   struck: '<fieldset class="size-options"><label style="text-decoration:line-through"><input type="radio" name="size" value="S" style="display:none"> S</label><label><input type="radio" name="size" value="M" style="display:none"> M</label></fieldset>',
   soldout: '<fieldset class="size-options">' + ['S', 'M'].map((v) => `<label><input type="radio" name="size" value="${v}" disabled> ${v}</label>`).join('') + '</fieldset>',
 };
+/** A recommended product's quick-add sizes: a picture, a link to another product and its own size, placed before the real picker. */
+const CARD_PICKER = '<div class="tile"><a href="/products/other"><img alt="x" width="40" height="40" src="data:image/gif;base64,R0lGODlhAQABAAAAACw="></a><fieldset class="size-options"><label><input type="radio" name="cs" value="XL" style="display:none"> XL</label></fieldset></div>';
 const CHOSEN: Record<Sizes, string> = {
   radio: "!!document.querySelector('input[name=size]:checked')",
   select: "!!document.querySelector('select[name=size]').value",
@@ -52,7 +54,7 @@ const CHOSEN: Record<Sizes, string> = {
 };
 const WIRE_BUTTONS = "document.querySelectorAll('[data-size]').forEach(function (b) { b.onclick = function () { document.querySelectorAll('[data-size]').forEach(function (x) { x.setAttribute('aria-pressed', 'false'); }); b.setAttribute('aria-pressed', 'true'); }; });";
 
-export function startFixtureServer(opts: { pixel: boolean; sizes?: Sizes; countryGate?: boolean }): Promise<{ url: string; close: () => Promise<void> }> {
+export function startFixtureServer(opts: { pixel: boolean; sizes?: Sizes; countryGate?: boolean; soldOutFirst?: boolean; cardPicker?: boolean }): Promise<{ url: string; close: () => Promise<void> }> {
   const base = opts.pixel ? BASE_CODE(PIXEL_ID) : '';
   const server: Server = createServer((req, res) => {
     // A store that opens on "Select your country" and shows nothing else until one is chosen (khaadi.com).
@@ -71,22 +73,23 @@ export function startFixtureServer(opts: { pixel: boolean; sizes?: Sizes; countr
         <script>${opts.pixel ? "ttq.track('InitiateCheckout', { content_type: 'product', content_ids: ['1'], value: 10.5, currency: 'IQD' });" : ''}</script></body></html>`);
       return;
     }
-    if (req.url?.startsWith('/products/widget')) {
+    if (req.url?.startsWith('/products/widget') || req.url?.startsWith('/products/soldout')) {
+      const sizes: Sizes | undefined = req.url.startsWith('/products/soldout') ? 'soldout' : opts.sizes;
       res.end(`<html><head>${base}</head><body><h1>Widget</h1>
-        ${opts.sizes ? PICKER[opts.sizes] : ''}<p id="err"></p>
+        ${opts.cardPicker ? CARD_PICKER : ''}${sizes ? PICKER[sizes] : ''}<p id="err"></p>
         <button id="atc">Add to cart</button>
         <script>
-          ${opts.sizes === 'buttons' ? WIRE_BUTTONS : ''}
+          ${sizes === 'buttons' ? WIRE_BUTTONS : ''}
           ${opts.pixel ? "ttq.track('ViewContent', { content_type: 'product', content_ids: ['1'], value: 10.5, currency: 'USD' });" : ''}
           document.getElementById('atc').onclick = function () {
-            ${opts.sizes ? `if (!(${CHOSEN[opts.sizes]})) { document.getElementById('err').textContent = '*Please select the size'; return; }` : ''}
+            ${sizes ? `if (!(${CHOSEN[sizes]})) { document.getElementById('err').textContent = '*Please select the size'; return; }` : ''}
             fetch('/cart/add.js', { method: 'POST' });
             ${opts.pixel ? "ttq.track('AddToCart', { content_type: 'product', content_ids: ['1'], value: 10.5, currency: 'IQD' }, { event_id: 'e1' });" : ''}
           };
         </script></body></html>`);
       return;
     }
-    res.end(`<html><head>${base}</head><body><a href="/products/widget">Widget</a><p>${'Welcome to our widget shop, free delivery on every order. '.repeat(12)}</p></body></html>`);
+    res.end(`<html><head>${base}</head><body>${opts.soldOutFirst ? '<a href="/products/soldout">Sold out widget</a>' : ''}<a href="/products/widget">Widget</a><p>${'Welcome to our widget shop, free delivery on every order. '.repeat(12)}</p></body></html>`);
   });
   return new Promise((resolve) => {
     server.listen(0, '127.0.0.1', () => {

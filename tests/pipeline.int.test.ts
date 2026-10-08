@@ -62,8 +62,8 @@ describe.skipIf(!canLaunch)('add to cart when the store insists on a size', () =
   const servers: Awaited<ReturnType<typeof startFixtureServer>>[] = [];
   afterAll(async () => { await Promise.all(servers.map((s) => s.close())); });
 
-  const scan = async (sizes: Sizes) => {
-    const server = await startFixtureServer({ pixel: true, sizes });
+  const scan = async (sizes: Sizes, soldOutFirst = false) => {
+    const server = await startFixtureServer({ pixel: true, sizes, soldOutFirst });
     servers.push(server);
     const session = await ScanSession.open({
       headless: true, allowLiveEvents: false,
@@ -81,6 +81,14 @@ describe.skipIf(!canLaunch)('add to cart when the store insists on a size', () =
     expect(atc?.status).toBe('verified');
     expect(atc?.evidence.join(' ')).toContain(picked); // the report says which option was chosen for the check
     expect(capture.phases.find((p) => p.phase === 'checkout')?.reached).toBe(true);
+  });
+
+  it('moves on to the next product when the first one is sold out, and says so', async () => {
+    const { report, capture } = await scan('radio', true);
+    expect(report.findings.find((x) => x.id === 'event.AddToCart')?.status).toBe('verified');
+    const atc = capture.phases.find((p) => p.phase === 'add-to-cart');
+    expect(atc?.reached).toBe(true);
+    expect(atc?.note).toContain('product 2 was used');
   });
 
   it('never calls it missing when every size is sold out: not checked, with the reason', async () => {

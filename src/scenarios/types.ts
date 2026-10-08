@@ -11,6 +11,8 @@ export interface ScenarioState {
   platform: Platform;
   staticPixelIds: string[];
   productUrl?: string;
+  /** Other product pages to try when the first cannot be added to the cart (sold out). */
+  otherProducts?: string[];
   consentClicked: boolean;
   consentBannerSeen: boolean;
 }

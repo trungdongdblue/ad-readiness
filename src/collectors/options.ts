@@ -12,7 +12,20 @@ const SNAPSHOT_JS = `(() => {
   const NOT_MAIN_SEL = ${JSON.stringify(NOT_MAIN)};
   document.querySelectorAll('[data-adr-i]').forEach((e) => e.removeAttribute('data-adr-i'));
   const OPT = '[class*="size" i],[class*="swatch" i],[class*="variant" i],[class*="option" i],[class*="colo" i],[id*="size" i],[id*="variant" i],[id*="option" i],[id*="colo" i],[aria-label*="size" i],[aria-label*="colo" i],fieldset,[role="radiogroup"],[role="group"]';
-  const vis = (e) => { const r = e.getBoundingClientRect(); const s = getComputedStyle(e); return r.width > 0 && r.height > 0 && s.visibility !== 'hidden' && s.display !== 'none' && !e.closest(NOT_MAIN_SEL); };
+  // A control inside a card with a picture and a link to ANOTHER product (recommendations, quick add) is not an option of this product.
+  // Climbing stops at the product heading: above it we are in the main product area.
+  const h1 = document.querySelector('h1');
+  const PRODUCT_LINK = /\\/(products?|product|item|p)\\/[^/?#]+/i;
+  const inOtherProduct = (e) => {
+    let n = e;
+    for (let i = 0; i < 8 && n.parentElement && n.parentElement !== document.body; i++) {
+      n = n.parentElement;
+      if (h1 && n.contains(h1)) return false;
+      if (n.querySelector('img') && [...n.querySelectorAll('a[href]')].some((a) => a.origin === location.origin && PRODUCT_LINK.test(a.pathname) && a.pathname !== location.pathname)) return true;
+    }
+    return false;
+  };
+  const vis = (e) => { const r = e.getBoundingClientRect(); const s = getComputedStyle(e); return r.width > 0 && r.height > 0 && s.visibility !== 'hidden' && s.display !== 'none' && !e.closest(NOT_MAIN_SEL) && !inOtherProduct(e); };
   const txt = (e) => (e.getAttribute('aria-label') || e.textContent || e.value || '').replace(/\\s+/g, ' ').trim().slice(0, 40);
   // Sold out is shown in many ways: disabled, a class, "sold out" text, a line through the label, or taps switched off.
   const dis = (e) => e.disabled === true || e.getAttribute('aria-disabled') === 'true' || /(sold|unavailable|out-of-stock|disabled)/i.test(String(e.className)) || /sold out|out of stock|unavailable|نفد/i.test(e.textContent || '') || getComputedStyle(e).pointerEvents === 'none' || [e, ...e.querySelectorAll('*')].slice(0, 3).some((x) => getComputedStyle(x).textDecorationLine.includes('line-through'));
